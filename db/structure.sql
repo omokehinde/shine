@@ -2,11 +2,12 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.2
--- Dumped by pg_dump version 9.5.2
+-- Dumped from database version 9.6rc1
+-- Dumped by pg_dump version 9.6rc1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -63,6 +64,18 @@ CREATE SEQUENCE addresses_id_seq
 --
 
 ALTER SEQUENCE addresses_id_seq OWNED BY addresses.id;
+
+
+--
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE ar_internal_metadata (
+    key character varying NOT NULL,
+    value character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
 
 
 --
@@ -241,49 +254,49 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: addresses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY addresses ALTER COLUMN id SET DEFAULT nextval('addresses_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: customer_shipping_addresses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY customer_shipping_addresses ALTER COLUMN id SET DEFAULT nextval('customer_shipping_addresses_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: customers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY customers ALTER COLUMN id SET DEFAULT nextval('customers_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: customers_billing_addresses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY customers_billing_addresses ALTER COLUMN id SET DEFAULT nextval('customers_billing_addresses_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: state id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY state ALTER COLUMN id SET DEFAULT nextval('state_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
--- Name: addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: addresses addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY addresses
@@ -291,7 +304,15 @@ ALTER TABLE ONLY addresses
 
 
 --
--- Name: customer_shipping_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY ar_internal_metadata
+    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: customer_shipping_addresses customer_shipping_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY customer_shipping_addresses
@@ -299,7 +320,7 @@ ALTER TABLE ONLY customer_shipping_addresses
 
 
 --
--- Name: customers_billing_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: customers_billing_addresses customers_billing_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY customers_billing_addresses
@@ -307,7 +328,7 @@ ALTER TABLE ONLY customers_billing_addresses
 
 
 --
--- Name: customers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: customers customers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY customers
@@ -315,7 +336,15 @@ ALTER TABLE ONLY customers
 
 
 --
--- Name: state_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: state state_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY state
@@ -323,7 +352,7 @@ ALTER TABLE ONLY state
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -380,25 +409,11 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (re
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
-
-
---
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
-INSERT INTO schema_migrations (version) VALUES ('20160620113601');
+INSERT INTO schema_migrations (version) VALUES ('20160620113601'), ('20160621220935'), ('20160622111416'), ('20160625160433'), ('201609131232');
 
-INSERT INTO schema_migrations (version) VALUES ('20160621220935');
-
-INSERT INTO schema_migrations (version) VALUES ('20160622111416');
-
-INSERT INTO schema_migrations (version) VALUES ('20160625160433');
-
-INSERT INTO schema_migrations (version) VALUES ('201609131232');
 
