@@ -1,85 +1,12 @@
 <article ng-app="customers" ng-controller="CustomerSearchController">
 
 <div ng-view></div>
-<header>
-	<h1 class="h2">Customer Search</h1>
-</header>
 
-<section class="search-form">
-<!-- This is a rails form helper that won't work with Angular so we convert the form back to HTML from line 21 -->
-	<!-- <%= form_for :customers, method: :get do |f| %>
-		<div class="input-group input-group-lg">
-			<%= label_tag :keywords, nil, class: "sr-only" %>
-			<%= text_field_tag :keywords, nil, placeholder: "First Name, Last Name, or Email Address", class: "form-control input-lg" %>
-			<span class="input-group-btn">
-				<%= submit_tag "Find Customers", class: "btn btn-primary btn-lg" %>
-			</span>
-		</div>
-		<% end %> -->
-
-<!-- The HTML form start from line 21 so we can use angular for better UI search -->
-
-<form>
-	<!-- First search with Angular with button -->
-	<!-- <div class="input-group input-group-lg">
-		<label for="keywords" class="sr-only">Keywords</label>
-		<input type="text" name="keywords" class="form-control input-lg" placeholder="First Name, Last Name, or Email Address" ng-model="keywords">
-		<span class="input-group-btn">
-			<button class="btn btn-primary btn-lg" ng-click="search(keywords)">Find Customers</button>
-		</span>
-	</div> -->
-
-	<!-- Better search implimention without button -->
-	<label for="search.keywords" class="sr-only">Keywords</label>
-	<input type="text" name="keywords" class="form-control input-lg" placeholder="First Name, Last Name, or Email Address" ng-change="search(keywords)" ng-model="keywords">
-</form>
-<h1 class="searchedFor" ng-if="searchedFor">
-	<small>Searched for: </small>{{ searchedFor }}
-</h1>
-</section>
-
-<section class="search-results" ng-if="customers.length > 0">
-	<header>
-		<h1 class="h3">Results</h1>
-	</header>
-	<!-- '<'%= render partial: "pager", locals: { keywords: @keywords, page: @page } %'>'  Erb pagination-->
-	<nav>
-		<ul class="pager">
-
-	<!-- Replacing ERB template with angular ng-repeat -->
-		<!--	<% @customers.each do |customer| %>
-				<li class="list-group-item clearfix">
-					<h3 class="pull-right"><small class="text-uppercase"> Joined</small> <%= l customer.created_at.to_date %></h3>
-					<h2 class="h3"><%= customer.first_name %> <%= customer.last_name %> <small><%= customer.username %></small></h2>
-					<h4><%= customer.email %></h4>
-				</li>
-				<% end %> -->
-	<!-- Angular  ng-repeat from line 50 -->
-			<li class="previous">
-				<a href="" ng-click="previousPage()"> &larr; Previous</a>
-			</li>
-			<li class="next">
-				<a href="" ng-click="nextPage()">Next &rarr;</a>
-			</li>
-		</ul>
-	</nav>
-	<li class="list-group-item clearfix" ng-repeat="customer in customers">
-					<h3 class="pull-right"><small class="text-uppercase"> Joined</small>  {{ customer.created_at | date }}</h3>
-					<h2 class="h3">{{ customer.first_name }} {{ customer.last_name }} <small>{{ customer.username }}</small></h2>
-					<h4>{{ customer.email }}</h4>
-				</li>
-	<nav>
-		<ul class="pager">
-			<li class="pervious">
-				<a href="" ng-click="previousPage()">&larr; Previous</a>
-			</li>
-			<li class="next">
-				<a href="" ng-click="nextPage()">Next &rarr;</a>
-			</li>
-		</ul>
-	</nav>
-	
-	<!-- '<'%= render partial: "pager", locals: { keywords: @keywords, page: @page } %'>' -->
-</section>
 
 </article>
+
+<footer>
+	<div class="conatiner">
+		<%= link_to "Log Out", destroy_user_session_path, method: :delete %>
+	</div>
+</footer>
