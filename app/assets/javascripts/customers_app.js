@@ -64,37 +64,45 @@ app.config(["$routeProvider", function($routeProvider) {
 // ]);
 
 
-app.controller("CustomerSearchController", ["$scope", "$http", "$location", function($scope, $http, $location) {
+app.controller("CustomerSearchController", ["$scope", "$http", "$location",
+	function ($scope, $http, $location) {
 
-	var page = 0;
-	$scope.customers = [];
+		var page = 0;
 
-	$scope.search = function(searchTerm) {
-		if (searchTerm.length < 3) {
-			return;
-		} 
+		$scope.customers = [];
+		$scope.search = function (searchTerm) {
+			$scope.searchedFor = searchTerm;
 
-		$http.get("/customers.json", {"params": {"keywords": searchTerm, "page": page } }).then(function(response) {
-			$scope.customers = response.data;
-		}, function(response) {
-			alert("There was a problem: " + response)
+			if (searchTerm.length < 3) {
+				return;
+			}
+
+			$http.get("/customers.json", { "params": {"keywords": searchTerm, "page": page } }
+				).then(function(response) {
+					$scope.customers = response.data
+				}, function (response) {
+					alert("There was a problem " + response.status);
+				}
+				);
+		},
+
+		$scope.previousPage = function () {
+			if (page > 0) {
+				page = page -1;
+				$scope.search($scope.keywords);
+			}
+		},
+
+		$scope.nextPage = function () {
+				page +=1
+				$scope.search($scope.keywords);
+		},
+
+		$scope.viewDetails = function(customer) {
+			$location.path('/' + customer.id);
 		}
-		);
-	}
 
-	$scope.previousPage = function() {
-		if (page > 0) {
-			page = page - 1;
-			$scope.search($scope.keywords);
-		}
-	}
-
-	$scope.nextPage = function() {
-		page = page + 1;
-		$scope.search($scope.keywords);
-	}
-}
-]);
+	}]);
 
 app.controller("CustomerDetailController", ["$scope", "$http", "$routeParams", function($scope, $http, $routeParams) {
 	var customerId = $routeParams.id;
